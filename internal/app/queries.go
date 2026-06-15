@@ -50,12 +50,14 @@ func (a *App) getMatch(id int64) *Match {
 	return &m
 }
 
-// upcomingMatches returns scheduled, both-teams-known matches not yet kicked off.
+// upcomingMatches returns bettable matches: live ones first, then scheduled
+// matches that haven't kicked off. Both teams must be known.
 func (a *App) upcomingMatches() []Match {
 	now := time.Now().Unix()
 	rows, err := a.db.Query(`SELECT `+matchCols+matchFrom+
-		` WHERE m.status='scheduled' AND m.home_fifa<>'' AND m.away_fifa<>'' AND m.kickoff>?
-		  ORDER BY m.kickoff`, now)
+		` WHERE m.home_fifa<>'' AND m.away_fifa<>''
+		    AND (m.status='live' OR (m.status='scheduled' AND m.kickoff>?))
+		  ORDER BY (m.status='live') DESC, m.kickoff`, now)
 	if err != nil {
 		return nil
 	}

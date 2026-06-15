@@ -64,6 +64,11 @@ func typeLabel(lang, t string) string {
 			return "Tài/Xỉu"
 		}
 		return "O/U"
+	case "cs":
+		if lang == "vi" {
+			return "Tỷ số"
+		}
+		return "CS"
 	}
 	return t
 }
@@ -91,6 +96,8 @@ func creatorSide(lang string, b Bet) string {
 			return tr(lang, "w.over") + " " + numStr(b.Line)
 		}
 		return tr(lang, "w.under") + " " + numStr(b.Line)
+	case "cs":
+		return tr(lang, "w.score") + " " + b.Pick
 	}
 	return ""
 }
@@ -119,6 +126,8 @@ func takerSide(lang string, b Bet) string {
 			return tr(lang, "w.under") + " " + numStr(b.Line)
 		}
 		return tr(lang, "w.over") + " " + numStr(b.Line)
+	case "cs":
+		return tr(lang, "w.notscore") + " " + b.Pick
 	}
 	return ""
 }

@@ -66,25 +66,51 @@ func Run() error {
 	return http.ListenAndServe(addr, a.router())
 }
 
-// startJobs runs odds + results sync and settlement on a timer.
+// startJobs settles locally every tick, polls live scores only while a match is
+// on, and refreshes pre-match odds infrequently to conserve API quota.
 func (a *App) startJobs() {
-	run := func() {
-		if a.oddsKey != "" {
-			if err := a.syncOdds(context.Background()); err != nil {
-				log.Printf("[odds] %v", err)
-			}
-			if err := a.syncScores(context.Background()); err != nil {
-				log.Printf("[scores] %v", err)
-			}
-		}
-		a.settleDueMatches()
+	tick := 120 * time.Second
+	if v, err := strconv.Atoi(os.Getenv("AEWC_LIVE_POLL_SECONDS")); err == nil && v >= 20 {
+		tick = time.Duration(v) * time.Second
+	}
+	oddsEvery := int((6 * time.Hour) / tick) // refresh odds ~every 6h
+	if oddsEvery < 1 {
+		oddsEvery = 1
 	}
 	go func() {
 		time.Sleep(3 * time.Second)
-		run()
-		t := time.NewTicker(15 * time.Minute)
-		for range t.C {
-			run()
+		if a.oddsKey != "" {
+			a.syncOdds(context.Background())
+			a.syncScores(context.Background())
+		}
+		a.settleDueMatches()
+		n := 0
+		for range time.NewTicker(tick).C {
+			n++
+			a.settleDueMatches()
+			if a.oddsKey == "" {
+				continue
+			}
+			if a.hasLiveWindow() {
+				if err := a.syncScores(context.Background()); err != nil {
+					log.Printf("[scores] %v", err)
+				}
+			}
+			if n%oddsEvery == 0 {
+				if err := a.syncOdds(context.Background()); err != nil {
+					log.Printf("[odds] %v", err)
+				}
+			}
 		}
 	}()
+}
+
+// hasLiveWindow reports whether any match is around kickoff (so live polling is
+// worth the API call): kickoff within the last ~3h and not finished.
+func (a *App) hasLiveWindow() bool {
+	now := time.Now().Unix()
+	var c int
+	a.db.QueryRow(`SELECT COUNT(*) FROM matches WHERE status!='finished' AND kickoff<=? AND kickoff>=?`,
+		now+120, now-3*3600).Scan(&c)
+	return c > 0
 }

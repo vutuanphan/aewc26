@@ -265,17 +265,19 @@ func mainTotals(ev apiEvent) (line, over, under float64) {
 	return
 }
 
-// syncScores pulls recent completed scores and records results.
+// syncScores pulls recent scores. Completed matches are finalized (and settle);
+// in-play matches are marked live with their running score, and a goal voids
+// every still-open (un-taken) bet on that match so stale offers aren't unfair.
 func (a *App) syncScores(ctx context.Context) error {
 	evs, err := a.fetchEvents(ctx, "/scores", map[string]string{"daysFrom": "3"})
 	if err != nil {
 		return err
 	}
 	pair, normToFifa := a.pairIndex()
-	n := 0
+	finished, voided := 0, 0
 	for _, ev := range evs {
-		if !ev.Completed || len(ev.Scores) < 2 {
-			continue
+		if len(ev.Scores) < 2 {
+			continue // not started yet (scores are null)
 		}
 		mid, ok := resolveMatch(ev, pair, normToFifa)
 		if !ok {
@@ -291,14 +293,29 @@ func (a *App) syncScores(ctx context.Context) error {
 			}
 		}
 		var status string
-		if a.db.QueryRow(`SELECT status FROM matches WHERE id=?`, mid).Scan(&status) != nil || status == "finished" {
+		var oldH, oldA int
+		if a.db.QueryRow(`SELECT status,ft_home,ft_away FROM matches WHERE id=?`, mid).Scan(&status, &oldH, &oldA) != nil {
 			continue
 		}
-		a.db.Exec(`UPDATE matches SET ft_home=?,ft_away=?,status='finished',settled=0 WHERE id=?`, hs, as, mid)
-		n++
+		if status == "finished" {
+			continue
+		}
+		if ev.Completed {
+			a.db.Exec(`UPDATE matches SET ft_home=?,ft_away=?,status='finished',settled=0 WHERE id=?`, hs, as, mid)
+			finished++
+			continue
+		}
+		// in-play
+		changed := hs != oldH || as != oldA
+		if status != "live" || changed {
+			a.db.Exec(`UPDATE matches SET status='live',ft_home=?,ft_away=? WHERE id=?`, hs, as, mid)
+		}
+		if changed {
+			voided += a.refundOpenBets(mid, "live_voided", "có bàn thắng — huỷ kèo chưa khớp")
+		}
 	}
-	if n > 0 {
-		log.Printf("[scores] %d new results", n)
+	if finished > 0 || voided > 0 {
+		log.Printf("[scores] %d finished, %d open bets voided on goals", finished, voided)
 	}
 	return nil
 }

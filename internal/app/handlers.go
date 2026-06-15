@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"net/url"
 	"strconv"
+	"strings"
 	"time"
 )
 
@@ -134,6 +135,9 @@ func (a *App) handleCreateBet(w http.ResponseWriter, r *http.Request) {
 	matchID, _ := strconv.ParseInt(r.FormValue("match"), 10, 64)
 	betType := r.FormValue("betType")
 	pick := r.FormValue("pick")
+	if betType == "cs" {
+		pick = strings.TrimSpace(r.FormValue("csHome")) + "-" + strings.TrimSpace(r.FormValue("csAway"))
+	}
 	line, _ := strconv.ParseFloat(r.FormValue("line"), 64)
 	stake, _ := strconv.ParseInt(r.FormValue("stake"), 10, 64)
 	note := r.FormValue("note")

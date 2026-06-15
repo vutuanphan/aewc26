@@ -31,8 +31,13 @@ friends, a family, or an office.
 
 - ⚔️ **Head-to-head betting** — creator stakes N points on one side, one taker
   matches N on the opposite side. Winner takes the pot.
-- 🎲 **Three bet types** — 1x2 (win/draw/lose), **Asian handicap** (including
-  quarter lines → half-win / push / half-loss), and over/under total goals.
+- 🎲 **Four bet types** — 1x2 (win/draw/lose), **Asian handicap** (including
+  quarter lines → half-win / push / half-loss), over/under total goals, and
+  **correct score**.
+- 🔴 **Live (in-play) betting** — keep posting and taking bets while a match is
+  on, with the running score shown. When a goal is scored, every still-open
+  (un-taken) offer is automatically voided and refunded so nobody can pick off
+  a stale price.
 - 🤖 **Automatic settlement** — results sync in and matched bets pay out with no
   manual work. Push/void refunds, un-taken bets refunded at kickoff.
 - 👛 **Wallet + full ledger** — every grant, stake, refund and payout is
@@ -134,6 +139,13 @@ This is play-money among friends, but it still handles auth. See
 [SECURITY.md](SECURITY.md). Highlights: bcrypt password hashing, server-side
 sessions, CSRF double-submit tokens, parameterized SQL. Keep `.env` private and
 put the app behind HTTPS (e.g. nginx/Caddy).
+
+## Roadmap
+
+- Corner & card markets with automatic settlement (needs a stats provider such
+  as API-Football, since The Odds API doesn't return corner/card *results*).
+- Light theme + PWA install.
+- More languages.
 
 ## Credits
 

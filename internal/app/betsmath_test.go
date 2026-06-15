@@ -26,6 +26,8 @@ func TestCreatorFractionAndPayouts(t *testing.T) {
 		{"OU under 2.5 total 3", "ou", "under", 2.5, 2, 1, -1, 0, 200, "taker"},
 		{"OU over 3.0 push", "ou", "over", 3.0, 2, 1, 0, 100, 100, "push"},
 		{"OU over 2.75 half-win", "ou", "over", 2.75, 2, 1, 0.5, 150, 50, "creator_half"},
+		{"CS exact hit", "cs", "2-1", 0, 2, 1, 1, 200, 0, "creator"},
+		{"CS miss", "cs", "2-1", 0, 1, 1, -1, 0, 200, "taker"},
 	}
 	for _, c := range cases {
 		t.Run(c.name, func(t *testing.T) {

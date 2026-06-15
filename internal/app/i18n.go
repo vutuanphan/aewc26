@@ -29,6 +29,9 @@ var dict = map[string][2]string{
 	"type.wdl":      {"Win / Draw / Lose (1x2)", "Thắng / Hòa / Thua (1x2)"},
 	"type.ah":       {"Asian handicap", "Chấp châu Á"},
 	"type.ou":       {"Over / Under", "Tài / Xỉu"},
+	"type.cs":       {"Correct score", "Tỷ số chính xác"},
+	"form.predscore": {"Predicted score", "Tỷ số dự đoán"},
+	"live":          {"LIVE", "LIVE"},
 	"form.line":     {"Line (multiple of 0.25)", "Mức kèo (bội số 0.25)"},
 	"form.stake":    {"Stake (points)", "Số điểm cược"},
 	"form.note":     {"Note (optional)", "Ghi chú (tuỳ chọn)"},
@@ -98,9 +101,11 @@ var dict = map[string][2]string{
 	"w.win":   {"win", "thắng"},
 	"w.draw":  {"Draw", "Hòa"},
 	"w.side":  {"Side", "Cửa"},
-	"w.over":  {"Over", "Tài"},
-	"w.under": {"Under", "Xỉu"},
-	"w.or":    {"or", "hoặc"},
+	"w.over":     {"Over", "Tài"},
+	"w.under":    {"Under", "Xỉu"},
+	"w.or":       {"or", "hoặc"},
+	"w.score":    {"Score", "Tỷ số"},
+	"w.notscore": {"Not", "Khác"},
 
 	// outcomes
 	"o.creator":      {"Creator wins", "Người tạo thắng"},
@@ -111,6 +116,7 @@ var dict = map[string][2]string{
 	"o.void":         {"Match void — refunded", "Trận huỷ — hoàn điểm"},
 	"o.no_taker":     {"No taker — refunded", "Không ai bắt — hoàn điểm"},
 	"o.cancelled":    {"Cancelled", "Đã huỷ"},
+	"o.live_voided":  {"Voided (goal) — refunded", "Có bàn thắng — hoàn điểm"},
 
 	// bet statuses
 	"s.waiting": {"Waiting for a taker", "Đang chờ người bắt"},

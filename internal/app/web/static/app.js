@@ -24,6 +24,7 @@
     var oddsRef = document.getElementById('oddsRef');
     var lineWrap = document.getElementById('lineWrap');
     var lineInp = document.getElementById('line');
+    var csWrap = document.getElementById('csWrap');
     var FEED = window.FEED || {};
 
     function radios(opts) {
@@ -39,23 +40,27 @@
       var m = FEED[matchSel.value];
       var home = m ? m.Home : L.home, away = m ? m.Away : L.away;
       var t = typeSel.value;
+      lineWrap.classList.add('hidden');
+      csWrap.classList.add('hidden');
+      pickWrap.innerHTML = '';
       if (t === 'wdl') {
         radios([{ v: 'home', l: home + ' ' + L.win }, { v: 'draw', l: L.draw }, { v: 'away', l: away + ' ' + L.win }]);
-        lineWrap.classList.add('hidden');
       } else if (t === 'ah') {
         radios([{ v: 'home', l: L.side + home }, { v: 'away', l: L.side + away }]);
         lineWrap.classList.remove('hidden');
         lineInp.value = (m && m.Has && m.AhLine) ? m.AhLine : -0.5;
-      } else {
+      } else if (t === 'ou') {
         radios([{ v: 'over', l: L.over }, { v: 'under', l: L.under }]);
         lineWrap.classList.remove('hidden');
         lineInp.value = (m && m.Has && m.OuLine) ? m.OuLine : 2.5;
+      } else if (t === 'cs') {
+        csWrap.classList.remove('hidden');
       }
       renderOdds(m, t, home, away);
     }
 
     function renderOdds(m, t, home, away) {
-      if (!m) { oddsRef.innerHTML = ''; return; }
+      if (!m || t === 'cs') { oddsRef.innerHTML = ''; return; }
       var head = '<div class="oh">' + L.refHead + ' · ' + (m.Has ? L.srcReal : L.srcEst) + '</div>';
       var body = '<div class="muted small">' + L.none + '</div>';
       if (t === 'wdl' && m.HomeOdds) {

@@ -31,13 +31,57 @@ func matchOpenForBets(m *Match) error {
 	if m == nil {
 		return errors.New("không tìm thấy trận")
 	}
-	if m.Status != "scheduled" {
-		return errors.New("trận đã bắt đầu hoặc kết thúc")
+	switch m.Status {
+	case "live":
+		return nil // in-play betting allowed
+	case "scheduled":
+		if m.KickoffUnix > 0 && time.Now().Unix() > m.KickoffUnix {
+			return errors.New("trận sắp bắt đầu, đợi vào kèo live")
+		}
+		return nil
+	default:
+		return errors.New("trận đã kết thúc")
 	}
-	if m.KickoffUnix > 0 && time.Now().Unix() > m.KickoffUnix {
-		return errors.New("đã qua giờ bóng lăn")
+}
+
+// refundOpenBets cancels and refunds every un-taken (open) bet on a match.
+// Used when a goal makes standing offers unfair, and on settlement.
+func (a *App) refundOpenBets(matchID int64, outcome, memo string) int {
+	rows, err := a.db.Query(`SELECT id,creator_id,stake FROM bets WHERE match_id=? AND status='open'`, matchID)
+	if err != nil {
+		return 0
 	}
-	return nil
+	type ob struct{ id, creator, stake int64 }
+	var obs []ob
+	for rows.Next() {
+		var o ob
+		if rows.Scan(&o.id, &o.creator, &o.stake) == nil {
+			obs = append(obs, o)
+		}
+	}
+	rows.Close()
+	now := time.Now().Unix()
+	n := 0
+	for _, o := range obs {
+		tx, err := a.db.Begin()
+		if err != nil {
+			continue
+		}
+		ok := func() bool {
+			if adjustBalance(tx, o.creator, o.stake, "refund", o.id, memo) != nil {
+				return false
+			}
+			_, err := tx.Exec(`UPDATE bets SET status='cancelled',outcome=?,settled_at=? WHERE id=? AND status='open'`, outcome, now, o.id)
+			return err == nil
+		}()
+		if ok {
+			tx.Commit()
+			n++
+		} else {
+			tx.Rollback()
+		}
+	}
+	return n
 }
 
 // createBet validates and stores a new open kèo, locking the creator's stake.

@@ -7,7 +7,7 @@
     <label>{{t .Lang "form.match"}}
       <select name="match" id="match" required>
         <option value="" disabled selected>{{t .Lang "form.choose"}}</option>
-        {{range .Data.Upcoming}}<option value="{{.ID}}">{{.HomeDisplay}} vs {{.AwayDisplay}} · {{ftime .KickoffUnix}}</option>{{end}}
+        {{range .Data.Upcoming}}<option value="{{.ID}}">{{if eq .Status "live"}}🔴 {{.FtHome}}-{{.FtAway}} {{end}}{{.HomeDisplay}} vs {{.AwayDisplay}}{{if ne .Status "live"}} · {{ftime .KickoffUnix}}{{end}}</option>{{end}}
       </select>
     </label>
     <label>{{t .Lang "form.type"}}
@@ -15,9 +15,14 @@
         <option value="wdl">{{t .Lang "type.wdl"}}</option>
         <option value="ah">{{t .Lang "type.ah"}}</option>
         <option value="ou">{{t .Lang "type.ou"}}</option>
+        <option value="cs">{{t .Lang "type.cs"}}</option>
       </select>
     </label>
     <div id="pickWrap" class="picks"></div>
+    <div id="csWrap" class="scorerow hidden">
+      <label>{{t .Lang "admin.home"}} <input type="number" min="0" name="csHome" id="csHome" value="1"></label>
+      <label>{{t .Lang "admin.away"}} <input type="number" min="0" name="csAway" id="csAway" value="0"></label>
+    </div>
     <div id="oddsRef" class="oddsref"></div>
     <label id="lineWrap" class="hidden">{{t .Lang "form.line"}}
       <input type="number" step="0.25" name="line" id="line" value="0">
@@ -40,7 +45,7 @@
   <div class="card bet">
     <div class="bet-top"><b>{{.Match.HomeDisplay}}</b> <span class="vs">vs</span> <b>{{.Match.AwayDisplay}}</b>
       <span class="tag">{{typeLabel $lang .BetType}}</span></div>
-    <div class="muted small">{{ftime .Match.KickoffUnix}}</div>
+    <div class="muted small">{{if eq .Match.Status "live"}}<span class="livebadge">🔴 {{t $lang "live"}} {{.Match.FtHome}}-{{.Match.FtAway}}</span>{{else}}{{ftime .Match.KickoffUnix}}{{end}}</div>
     <div class="sides">
       <div class="side"><span>{{.CreatorName}} {{t $lang "bet.backs"}}</span><b>{{creatorSide $lang .}}</b></div>
       <div class="side hl"><span>{{t $lang "bet.youtake"}}</span><b>{{takerSide $lang .}}</b></div>

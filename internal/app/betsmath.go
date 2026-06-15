@@ -3,7 +3,23 @@ package app
 import (
 	"fmt"
 	"math"
+	"strconv"
+	"strings"
 )
+
+// parseScore parses a correct-score pick like "2-1" into goals.
+func parseScore(s string) (h, a int, ok bool) {
+	parts := strings.SplitN(s, "-", 2)
+	if len(parts) != 2 {
+		return 0, 0, false
+	}
+	h, e1 := strconv.Atoi(strings.TrimSpace(parts[0]))
+	a, e2 := strconv.Atoi(strings.TrimSpace(parts[1]))
+	if e1 != nil || e2 != nil || h < 0 || a < 0 || h > 99 || a > 99 {
+		return 0, 0, false
+	}
+	return h, a, true
+}
 
 const eps = 1e-9
 
@@ -67,6 +83,15 @@ func creatorFraction(betType, pick string, line float64, ftH, ftA int) (float64,
 		default:
 			return 0, fmt.Errorf("bad ou pick")
 		}
+	case "cs":
+		h, a, ok := parseScore(pick)
+		if !ok {
+			return 0, fmt.Errorf("bad cs pick")
+		}
+		if ftH == h && ftA == a {
+			return 1, nil
+		}
+		return -1, nil
 	}
 	return 0, fmt.Errorf("bad bet type")
 }
@@ -106,6 +131,9 @@ func validPick(betType, pick string) bool {
 		return pick == "home" || pick == "away"
 	case "ou":
 		return pick == "over" || pick == "under"
+	case "cs":
+		_, _, ok := parseScore(pick)
+		return ok
 	}
 	return false
 }
