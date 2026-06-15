@@ -18,7 +18,8 @@ b{font-weight:700}
   background:rgba(13,17,23,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--border)}
 .brand{font-weight:800;font-size:1rem}.brand b{color:var(--gold)}
 .bal{margin-left:auto;font-weight:800;color:var(--gold)}.bal span{font-size:.7rem;color:var(--muted);margin-left:.25rem;font-weight:500}
-.logout button{background:transparent;border:1px solid var(--border);color:var(--muted);border-radius:8px;padding:.3rem .55rem;font-size:1rem;cursor:pointer}
+.logout button,.iconbtn{background:transparent;border:1px solid var(--border);color:var(--muted);border-radius:8px;padding:.3rem .55rem;font-size:1rem;cursor:pointer;line-height:1}
+.iconbtn:active{color:var(--accent);transform:rotate(90deg)}
 .langsw{display:flex;gap:.15rem;font-size:.72rem;font-weight:700}
 .langsw a{padding:.2rem .4rem;border:1px solid var(--border);border-radius:6px;color:var(--muted)}
 .langsw a.on{background:var(--accent);border-color:var(--accent);color:#fff}

@@ -13,6 +13,7 @@ var dict = map[string][2]string{
 	"nav.admin":  {"Admin", "Admin"},
 	"pts":        {"pts", "điểm"},
 	"logout":     {"Log out", "Đăng xuất"},
+	"refresh":    {"Refresh", "Tải lại"},
 
 	// login
 	"login.tagline": {"Friends' points betting arena", "Sân cá độ điểm của anh em"},
