@@ -1,0 +1,31 @@
+{{define "mybets"}}{{template "header" .}}
+{{$lang := .Lang}}
+<h2>{{t .Lang "mine.active"}}</h2>
+{{if not .Data.Active}}<p class="muted">{{t .Lang "mine.noactive"}}</p>{{end}}
+<div class="list">
+{{range .Data.Active}}
+  <div class="card">
+    <div class="bet-top"><b>{{.Match.HomeDisplay}}</b> <span class="vs">vs</span> <b>{{.Match.AwayDisplay}}</b><span class="tag">{{typeLabel $lang .BetType}}</span></div>
+    <div class="myside">{{t $lang "mine.myside"}} <b>{{.MySide}}</b></div>
+    <div class="bet-foot"><span class="muted">{{.StatusText}}</span><span class="stake">{{vnd .Stake}} {{t $lang "pts"}}</span></div>
+    {{if and (eq .Status "open") .IsCreator}}
+      <form method="post" action="/bets/cancel"><input type="hidden" name="csrf" value="{{$.CSRF}}"><input type="hidden" name="bet" value="{{.ID}}"><button class="ghost danger">{{t $lang "bet.cancel"}}</button></form>
+    {{end}}
+  </div>
+{{end}}
+</div>
+
+<h2>{{t .Lang "mine.done"}}</h2>
+{{if not .Data.Done}}<p class="muted">{{t .Lang "mine.nodone"}}</p>{{end}}
+<div class="list">
+{{range .Data.Done}}
+  <div class="card">
+    <div class="bet-top"><b>{{.Match.HomeDisplay}}</b> <span class="vs">vs</span> <b>{{.Match.AwayDisplay}}</b><span class="tag">{{typeLabel $lang .BetType}}</span></div>
+    {{if .Match.Settled}}<div class="muted small">{{t $lang "mine.result"}} {{.Match.FtHome}}–{{.Match.FtAway}}</div>{{end}}
+    <div class="myside">{{t $lang "mine.myside"}} <b>{{.MySide}}</b></div>
+    <div class="bet-foot"><span class="muted">{{.StatusText}}</span>
+      <span class="net {{if gt .Net 0}}win{{else if lt .Net 0}}loss{{end}}">{{if gt .Net 0}}+{{end}}{{vnd .Net}}</span></div>
+  </div>
+{{end}}
+</div>
+{{template "footer" .}}{{end}}

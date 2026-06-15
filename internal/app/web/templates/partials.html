@@ -1,0 +1,38 @@
+{{define "header"}}<!doctype html>
+<html lang="{{.Lang}}">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0d1117">
+<title>{{.Title}}</title>
+<link rel="stylesheet" href="/static/app.css">
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="/">⚽ {{.Brand}}</a>
+  <div class="bal">{{vnd .User.Balance}}<span>{{t .Lang "pts"}}</span></div>
+  <div class="langsw">
+    <a href="/lang?to=en" class="{{if ne .Lang "vi"}}on{{end}}">EN</a>
+    <a href="/lang?to=vi" class="{{if eq .Lang "vi"}}on{{end}}">VI</a>
+  </div>
+  <form method="post" action="/logout" class="logout"><button title="{{t .Lang "logout"}}">⎋</button></form>
+</header>
+{{if .Flash}}<div class="flash ok">{{.Flash}}</div>{{end}}
+{{if .FlashErr}}<div class="flash err">{{.FlashErr}}</div>{{end}}
+<main>
+{{end}}
+
+{{define "footer"}}</main>
+<nav class="tabbar">
+  <a href="/" class="{{if eq .Active "home"}}on{{end}}"><span>🎯</span>{{t .Lang "nav.bets"}}</a>
+  <a href="/mybets" class="{{if eq .Active "mybets"}}on{{end}}"><span>📋</span>{{t .Lang "nav.mine"}}</a>
+  <a href="/leaderboard" class="{{if eq .Active "leaderboard"}}on{{end}}"><span>🏆</span>{{t .Lang "nav.rank"}}</a>
+  <a href="/chat" class="{{if eq .Active "chat"}}on{{end}}"><span>💬</span>{{t .Lang "nav.chat"}}</a>
+  <a href="/wallet" class="{{if eq .Active "wallet"}}on{{end}}"><span>👛</span>{{t .Lang "nav.wallet"}}</a>
+  {{if .User.IsAdmin}}<a href="/admin" class="{{if eq .Active "admin"}}on{{end}}"><span>⚙️</span>{{t .Lang "nav.admin"}}</a>{{end}}
+</nav>
+<script>window.LANG="{{.Lang}}";</script>
+<script src="/static/app.js"></script>
+</body>
+</html>
+{{end}}

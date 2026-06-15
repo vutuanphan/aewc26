@@ -1,0 +1,114 @@
+:root{
+  --bg:#0d1117; --surface:#161b22; --surface2:#1c232c; --border:#2a323c;
+  --text:#e6edf3; --muted:#8b97a5; --accent:#3b82f6; --accent2:#1d4ed8;
+  --gold:#f5b301; --win:#2ea66b; --loss:#e5484d;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font:16px/1.45 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+  -webkit-text-size-adjust:100%}
+a{color:inherit;text-decoration:none}
+b{font-weight:700}
+.muted{color:var(--muted)} .small{font-size:.8rem} .hidden{display:none!important}
+
+/* top bar */
+.topbar{position:sticky;top:0;z-index:10;display:flex;align-items:center;gap:.6rem;
+  padding:.7rem 1rem;padding-top:max(.7rem,env(safe-area-inset-top));
+  background:rgba(13,17,23,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--border)}
+.brand{font-weight:800;font-size:1rem}.brand b{color:var(--gold)}
+.bal{margin-left:auto;font-weight:800;color:var(--gold)}.bal span{font-size:.7rem;color:var(--muted);margin-left:.25rem;font-weight:500}
+.logout button{background:transparent;border:1px solid var(--border);color:var(--muted);border-radius:8px;padding:.3rem .55rem;font-size:1rem;cursor:pointer}
+.langsw{display:flex;gap:.15rem;font-size:.72rem;font-weight:700}
+.langsw a{padding:.2rem .4rem;border:1px solid var(--border);border-radius:6px;color:var(--muted)}
+.langsw a.on{background:var(--accent);border-color:var(--accent);color:#fff}
+.langsw.center{justify-content:center;margin-top:1rem}
+
+main{max-width:680px;margin:0 auto;padding:.8rem 1rem 6rem}
+h2{font-size:1.05rem;margin:1.2rem 0 .6rem}
+
+.flash{max-width:680px;margin:.6rem auto 0;padding:.6rem .9rem;border-radius:10px;font-weight:600;font-size:.9rem}
+.flash.ok{background:color-mix(in srgb,var(--win) 18%,transparent);color:#7ee2ab}
+.flash.err{background:color-mix(in srgb,var(--loss) 18%,transparent);color:#ff9ca0}
+
+.card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:1rem;margin-bottom:.7rem}
+
+button,.btn{font:inherit}
+.primary{display:inline-flex;align-items:center;justify-content:center;gap:.4rem;border:none;border-radius:10px;
+  background:var(--accent);color:#fff;font-weight:700;padding:.7rem 1rem;cursor:pointer}
+.primary:active{background:var(--accent2)}
+.primary.block{width:100%}
+.ghost{background:transparent;border:1px solid var(--border);color:var(--text);border-radius:10px;padding:.55rem .9rem;cursor:pointer}
+.ghost.danger{color:var(--loss);border-color:color-mix(in srgb,var(--loss) 50%,var(--border))}
+
+/* forms */
+.betform{display:grid;gap:.7rem;margin-top:.7rem}
+.betform label{display:grid;gap:.3rem;font-size:.85rem;color:var(--muted)}
+select,input[type=number],input[type=text],input[type=password]{
+  width:100%;padding:.6rem .7rem;border:1px solid var(--border);border-radius:10px;background:var(--bg);color:var(--text);font-size:1rem}
+.scorerow{display:grid;grid-template-columns:1fr 1fr;gap:.6rem}
+.picks{display:flex;flex-wrap:wrap;gap:.5rem}
+.picks label{display:flex;align-items:center;gap:.35rem;padding:.5rem .7rem;border:1px solid var(--border);
+  border-radius:10px;color:var(--text);font-size:.9rem;cursor:pointer}
+.picks input{width:auto}
+.quick{display:flex;flex-wrap:wrap;gap:.4rem}
+.quick button{padding:.35rem .7rem;border:1px solid var(--border);border-radius:999px;background:var(--bg);color:var(--text);font-size:.8rem;cursor:pointer}
+
+.oddsref{border:1px solid var(--border);border-radius:10px;padding:.55rem .7rem;background:color-mix(in srgb,var(--accent) 5%,var(--bg));font-size:.85rem}
+.oddsref .oh{color:var(--muted);font-size:.74rem;margin-bottom:.4rem}
+.oddsref .og{display:flex;gap:.4rem;text-align:center}
+.oddsref .og>div{flex:1;border:1px solid var(--border);border-radius:8px;padding:.35rem;background:var(--surface)}
+.oddsref .og b{display:block;font-size:.98rem}.oddsref .og i{font-style:normal;color:var(--accent);font-size:.72rem}
+.useline{margin-top:.45rem;padding:.3rem .7rem;border:1px solid var(--accent);border-radius:999px;background:transparent;color:var(--accent);font-size:.78rem;font-weight:700;cursor:pointer}
+
+/* bets */
+.list{display:grid;gap:.6rem}
+.bet-top{display:flex;align-items:center;gap:.4rem;flex-wrap:wrap}
+.bet-top .tag{margin-left:auto;font-size:.7rem;font-weight:700;padding:.12rem .5rem;border-radius:999px;background:color-mix(in srgb,var(--accent) 16%,transparent);color:var(--accent)}
+.vs{color:var(--muted);font-weight:400;font-size:.85rem}
+.sides{display:grid;grid-template-columns:1fr 1fr;gap:.5rem;margin:.6rem 0}
+.side{border:1px dashed var(--border);border-radius:10px;padding:.5rem .6rem;display:grid;gap:.15rem}
+.side span{font-size:.7rem;color:var(--muted)}.side b{font-size:.92rem}
+.side.hl{border-style:solid;background:color-mix(in srgb,var(--accent) 8%,transparent)}
+.note{font-style:italic;color:var(--muted);font-size:.85rem;margin:.2rem 0 .5rem}
+.bet-foot{display:flex;align-items:center;justify-content:space-between;margin-top:.5rem}
+.stake{font-weight:800;font-size:1.05rem}
+.myside{font-size:.9rem;margin:.3rem 0}
+.net{font-weight:800}.net.win{color:var(--win)}.net.loss{color:var(--loss)}
+
+/* leaderboard */
+.board{display:grid;gap:.4rem}
+.lbrow{display:grid;grid-template-columns:2rem 1fr auto;align-items:center;gap:.6rem;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.7rem .9rem}
+.lbrow.me{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 8%,var(--surface))}
+.rank{font-weight:800;color:var(--muted);text-align:center}.rank.top{color:var(--gold)}
+.lbname{font-weight:700}.lbname small{color:var(--muted);font-weight:500}
+.lbpts{font-weight:800}
+
+/* wallet */
+.walletcard{display:grid;gap:.2rem}
+.bignum{font-size:1.9rem;font-weight:800}.bignum small{font-size:.9rem;color:var(--muted);font-weight:600}
+.txn{display:flex;justify-content:space-between;gap:.6rem;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:.6rem .8rem}
+.txn-r{text-align:right;display:grid}
+
+/* chat */
+.chatbox{display:grid;gap:.4rem;max-height:62vh;overflow-y:auto;padding:.3rem;margin-bottom:.7rem}
+.msg{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:.45rem .7rem;max-width:85%}
+.msg.mine{margin-left:auto;background:color-mix(in srgb,var(--accent) 14%,var(--surface));border-color:transparent}
+.msg-who{font-size:.72rem;color:var(--gold);font-weight:700;margin-right:.4rem}
+.msg-time{font-size:.65rem;color:var(--muted);margin-left:.4rem}
+.chatform{display:flex;gap:.5rem;position:sticky;bottom:5rem}
+
+/* tab bar */
+.tabbar{position:fixed;bottom:0;left:0;right:0;z-index:10;display:flex;background:rgba(13,17,23,.96);
+  backdrop-filter:blur(8px);border-top:1px solid var(--border);padding-bottom:env(safe-area-inset-bottom)}
+.tabbar a{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;padding:.5rem .2rem;font-size:.62rem;color:var(--muted)}
+.tabbar a span{font-size:1.15rem}
+.tabbar a.on{color:var(--accent)}
+
+/* login */
+.login-body{display:flex;align-items:center;justify-content:center;min-height:100dvh;padding:1.2rem}
+.login-card{width:100%;max-width:360px;background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:1.6rem;text-align:center}
+.login-logo{font-size:2.6rem}
+.login-card h1{font-size:1.3rem;margin:.4rem 0 0}
+.login-card form{display:grid;gap:.8rem;margin-top:1.2rem;text-align:left}
+.login-card label{display:grid;gap:.3rem;font-size:.85rem;color:var(--muted)}
+.login-card .primary{width:100%;margin-top:.3rem}

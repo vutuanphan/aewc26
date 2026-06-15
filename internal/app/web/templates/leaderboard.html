@@ -1,0 +1,13 @@
+{{define "leaderboard"}}{{template "header" .}}
+<h2>{{t .Lang "rank.title"}}</h2>
+<p class="muted small">{{t .Lang "rank.sub"}}</p>
+<div class="board">
+{{range $i, $u := .Data}}
+  <div class="lbrow {{if eq $u.ID $.User.ID}}me{{end}}">
+    <span class="rank {{if eq $i 0}}top{{end}}">{{add1 $i}}</span>
+    <span class="lbname">{{$u.Name}}{{if eq $u.ID $.User.ID}} <small>{{t $.Lang "rank.you"}}</small>{{end}}</span>
+    <span class="lbpts">{{vnd $u.Balance}}</span>
+  </div>
+{{end}}
+</div>
+{{template "footer" .}}{{end}}

@@ -1,0 +1,32 @@
+{{define "login"}}<!doctype html>
+<html lang="{{.Lang}}">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0d1117">
+<title>{{.Brand}}</title>
+<link rel="stylesheet" href="/static/app.css">
+</head>
+<body class="login-body">
+<div class="login-card">
+  <div class="login-logo">⚽</div>
+  <h1>{{.Brand}}</h1>
+  <p class="muted">{{t .Lang "login.tagline"}}</p>
+  {{if .FlashErr}}<div class="flash err">{{.FlashErr}}</div>{{end}}
+  <form method="post" action="/login">
+    <label>{{t .Lang "login.user"}}
+      <input name="username" autocapitalize="none" autocomplete="username" autofocus required placeholder="{{t .Lang "login.userph"}}">
+    </label>
+    <label>{{t .Lang "login.pass"}}
+      <input name="password" type="password" autocomplete="current-password" required>
+    </label>
+    <button class="primary" type="submit">{{t .Lang "login.btn"}}</button>
+  </form>
+  <div class="langsw center">
+    <a href="/lang?to=en" class="{{if ne .Lang "vi"}}on{{end}}">EN</a>
+    <a href="/lang?to=vi" class="{{if eq .Lang "vi"}}on{{end}}">VI</a>
+  </div>
+</div>
+</body>
+</html>
+{{end}}

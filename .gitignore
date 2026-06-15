@@ -1,0 +1,14 @@
+# secrets & local data
+.env
+/data/
+*.db
+*.db-wal
+*.db-shm
+
+# build artifacts
+/aewc
+dist/
+
+# misc
+.DS_Store
+*.log

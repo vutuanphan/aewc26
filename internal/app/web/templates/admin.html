@@ -1,0 +1,66 @@
+{{define "admin"}}{{template "header" .}}
+{{$lang := .Lang}}
+<h2>{{t .Lang "admin.grant"}}</h2>
+<form method="post" action="/admin/grant" class="card betform">
+  <input type="hidden" name="csrf" value="{{.CSRF}}">
+  <label>{{t .Lang "admin.to"}}
+    <select name="target">
+      <option value="all">{{t .Lang "admin.all"}}</option>
+      {{range .Data.Players}}<option value="{{.ID}}">{{.Name}} ({{vnd .Balance}})</option>{{end}}
+    </select>
+  </label>
+  <label>{{t .Lang "admin.amount"}} <input type="number" name="amount" value="100000" required></label>
+  <label>{{t .Lang "admin.mode"}}
+    <select name="mode">
+      <option value="add">{{t .Lang "admin.add"}}</option>
+      <option value="set">{{t .Lang "admin.set"}}</option>
+    </select>
+  </label>
+  <label>{{t .Lang "admin.memo"}} <input type="text" name="memo"></label>
+  <button class="primary">{{t .Lang "admin.update"}}</button>
+</form>
+
+<h2>{{t .Lang "admin.result"}}</h2>
+<form method="post" action="/admin/result" class="card betform">
+  <input type="hidden" name="csrf" value="{{.CSRF}}">
+  <label>{{t .Lang "admin.match"}}
+    <select name="match" required>
+      <option value="" disabled selected>{{t .Lang "form.choose"}}</option>
+      {{range .Data.Matches}}<option value="{{.ID}}">{{.HomeDisplay}} vs {{.AwayDisplay}} · {{ftime .KickoffUnix}}{{if .Settled}} ({{t $lang "admin.settled"}} {{.FtHome}}–{{.FtAway}}){{else if eq .Status "finished"}} ({{.FtHome}}–{{.FtAway}}){{end}}</option>{{end}}
+    </select>
+  </label>
+  <div class="scorerow">
+    <label>{{t .Lang "admin.home"}} <input type="number" name="ftHome" min="0" value="0" required></label>
+    <label>{{t .Lang "admin.away"}} <input type="number" name="ftAway" min="0" value="0" required></label>
+  </div>
+  <button class="primary">{{t .Lang "admin.save"}}</button>
+  <p class="muted small">{{t .Lang "admin.hint"}}</p>
+</form>
+
+<h2>{{t .Lang "admin.users"}}</h2>
+<form method="post" action="/admin/user/create" class="card betform">
+  <input type="hidden" name="csrf" value="{{.CSRF}}">
+  <div class="scorerow">
+    <label>{{t .Lang "admin.username"}} <input name="username" autocapitalize="none" required></label>
+    <label>{{t .Lang "admin.dname"}} <input name="name" required></label>
+  </div>
+  <div class="scorerow">
+    <label>{{t .Lang "admin.pw"}} <input name="password" required></label>
+    <label>{{t .Lang "admin.startbal"}} <input type="number" name="balance" value="{{.Data.StartBalance}}"></label>
+  </div>
+  <button class="primary">{{t .Lang "admin.newuser"}}</button>
+</form>
+<div class="list">
+{{range .Data.Players}}
+  <div class="card">
+    <div class="bet-foot"><b>{{.Name}}</b> <span class="muted small">@{{.Username}} · {{vnd .Balance}}</span></div>
+    <form method="post" action="/admin/user/resetpw" class="chatform">
+      <input type="hidden" name="csrf" value="{{$.CSRF}}">
+      <input type="hidden" name="user" value="{{.ID}}">
+      <input name="password" placeholder="{{t $.Lang "admin.newpw"}}" required>
+      <button class="ghost">{{t $.Lang "admin.resetpw"}}</button>
+    </form>
+  </div>
+{{end}}
+</div>
+{{template "footer" .}}{{end}}

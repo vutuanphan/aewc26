@@ -1,0 +1,21 @@
+{{define "chat"}}{{template "header" .}}
+<h2>{{t .Lang "chat.title"}}</h2>
+<div class="chatbox" id="chatbox">{{template "chat_feed" .}}</div>
+<form method="post" action="/chat" class="chatform">
+  <input type="hidden" name="csrf" value="{{.CSRF}}">
+  <input type="text" name="body" maxlength="500" placeholder="{{t .Lang "chat.ph"}}" autocomplete="off" required>
+  <button class="primary">{{t .Lang "chat.send"}}</button>
+</form>
+{{template "footer" .}}{{end}}
+
+{{define "chat_feed"}}
+{{range .Data.Msgs}}
+  <div class="msg {{if eq .UserID $.Data.Me}}mine{{end}}">
+    <span class="msg-who">{{.UserName}}</span>
+    <span class="msg-body">{{.Body}}</span>
+    <span class="msg-time">{{ftime .CreatedUnix}}</span>
+  </div>
+{{else}}
+  <p class="muted">{{t $.Lang "chat.none"}}</p>
+{{end}}
+{{end}}

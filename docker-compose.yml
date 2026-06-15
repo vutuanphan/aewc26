@@ -1,0 +1,15 @@
+services:
+  aewc:
+    build: .
+    container_name: aewc
+    image: aewc:latest
+    restart: unless-stopped
+    ports:
+      - "${HOST_PORT:-8091}:8090"
+    env_file:
+      - .env
+    volumes:
+      - aewc_data:/data
+
+volumes:
+  aewc_data:

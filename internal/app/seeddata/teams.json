@@ -1,0 +1,290 @@
+[
+ {
+  "fifaCode": "ALG",
+  "name": "Algeria",
+  "iso2": "dz",
+  "confederation": "CAF"
+ },
+ {
+  "fifaCode": "ARG",
+  "name": "Argentina",
+  "iso2": "ar",
+  "confederation": "CONMEBOL"
+ },
+ {
+  "fifaCode": "AUS",
+  "name": "Australia",
+  "iso2": "au",
+  "confederation": "AFC"
+ },
+ {
+  "fifaCode": "AUT",
+  "name": "Austria",
+  "iso2": "at",
+  "confederation": "UEFA"
+ },
+ {
+  "fifaCode": "BEL",
+  "name": "Belgium",
+  "iso2": "be",
+  "confederation": "UEFA"
+ },
+ {
+  "fifaCode": "BIH",
+  "name": "Bosnia & Herzegovina",
+  "iso2": "ba",
+  "confederation": "UEFA"
+ },
+ {
+  "fifaCode": "BRA",
+  "name": "Brazil",
+  "iso2": "br",
+  "confederation": "CONMEBOL"
+ },
+ {
+  "fifaCode": "CAN",
+  "name": "Canada",
+  "iso2": "ca",
+  "confederation": "CONCACAF"
+ },
+ {
+  "fifaCode": "CPV",
+  "name": "Cape Verde",
+  "iso2": "cv",
+  "confederation": "CAF"
+ },
+ {
+  "fifaCode": "COL",
+  "name": "Colombia",
+  "iso2": "co",
+  "confederation": "CONMEBOL"
+ },
+ {
+  "fifaCode": "CRO",
+  "name": "Croatia",
+  "iso2": "hr",
+  "confederation": "UEFA"
+ },
+ {
+  "fifaCode": "CUW",
+  "name": "Curaçao",
+  "iso2": "cw",
+  "confederation": "CONCACAF"
+ },
+ {
+  "fifaCode": "CZE",
+  "name": "Czech Republic",
+  "iso2": "cz",
+  "confederation": "UEFA"
+ },
+ {
+  "fifaCode": "COD",
+  "name": "DR Congo",
+  "iso2": "cd",
+  "confederation": "CAF"
+ },
+ {
+  "fifaCode": "ECU",
+  "name": "Ecuador",
+  "iso2": "ec",
+  "confederation": "CONMEBOL"
+ },
+ {
+  "fifaCode": "EGY",
+  "name": "Egypt",
+  "iso2": "eg",
+  "confederation": "CAF"
+ },
+ {
+  "fifaCode": "ENG",
+  "name": "England",
+  "iso2": "gb-eng",
+  "confederation": "UEFA"
+ },
+ {
+  "fifaCode": "FRA",
+  "name": "France",
+  "iso2": "fr",
+  "confederation": "UEFA"
+ },
+ {
+  "fifaCode": "GER",
+  "name": "Germany",
+  "iso2": "de",
+  "confederation": "UEFA"
+ },
+ {
+  "fifaCode": "GHA",
+  "name": "Ghana",
+  "iso2": "gh",
+  "confederation": "CAF"
+ },
+ {
+  "fifaCode": "HAI",
+  "name": "Haiti",
+  "iso2": "ht",
+  "confederation": "CONCACAF"
+ },
+ {
+  "fifaCode": "IRN",
+  "name": "Iran",
+  "iso2": "ir",
+  "confederation": "AFC"
+ },
+ {
+  "fifaCode": "IRQ",
+  "name": "Iraq",
+  "iso2": "iq",
+  "confederation": "AFC"
+ },
+ {
+  "fifaCode": "CIV",
+  "name": "Ivory Coast",
+  "iso2": "ci",
+  "confederation": "CAF"
+ },
+ {
+  "fifaCode": "JPN",
+  "name": "Japan",
+  "iso2": "jp",
+  "confederation": "AFC"
+ },
+ {
+  "fifaCode": "JOR",
+  "name": "Jordan",
+  "iso2": "jo",
+  "confederation": "AFC"
+ },
+ {
+  "fifaCode": "MEX",
+  "name": "Mexico",
+  "iso2": "mx",
+  "confederation": "CONCACAF"
+ },
+ {
+  "fifaCode": "MAR",
+  "name": "Morocco",
+  "iso2": "ma",
+  "confederation": "CAF"
+ },
+ {
+  "fifaCode": "NED",
+  "name": "Netherlands",
+  "iso2": "nl",
+  "confederation": "UEFA"
+ },
+ {
+  "fifaCode": "NZL",
+  "name": "New Zealand",
+  "iso2": "nz",
+  "confederation": "OFC"
+ },
+ {
+  "fifaCode": "NOR",
+  "name": "Norway",
+  "iso2": "no",
+  "confederation": "UEFA"
+ },
+ {
+  "fifaCode": "PAN",
+  "name": "Panama",
+  "iso2": "pa",
+  "confederation": "CONCACAF"
+ },
+ {
+  "fifaCode": "PAR",
+  "name": "Paraguay",
+  "iso2": "py",
+  "confederation": "CONMEBOL"
+ },
+ {
+  "fifaCode": "POR",
+  "name": "Portugal",
+  "iso2": "pt",
+  "confederation": "UEFA"
+ },
+ {
+  "fifaCode": "QAT",
+  "name": "Qatar",
+  "iso2": "qa",
+  "confederation": "AFC"
+ },
+ {
+  "fifaCode": "KSA",
+  "name": "Saudi Arabia",
+  "iso2": "sa",
+  "confederation": "AFC"
+ },
+ {
+  "fifaCode": "SCO",
+  "name": "Scotland",
+  "iso2": "gb-sct",
+  "confederation": "UEFA"
+ },
+ {
+  "fifaCode": "SEN",
+  "name": "Senegal",
+  "iso2": "sn",
+  "confederation": "CAF"
+ },
+ {
+  "fifaCode": "RSA",
+  "name": "South Africa",
+  "iso2": "za",
+  "confederation": "CAF"
+ },
+ {
+  "fifaCode": "KOR",
+  "name": "South Korea",
+  "iso2": "kr",
+  "confederation": "AFC"
+ },
+ {
+  "fifaCode": "ESP",
+  "name": "Spain",
+  "iso2": "es",
+  "confederation": "UEFA"
+ },
+ {
+  "fifaCode": "SWE",
+  "name": "Sweden",
+  "iso2": "se",
+  "confederation": "UEFA"
+ },
+ {
+  "fifaCode": "SUI",
+  "name": "Switzerland",
+  "iso2": "ch",
+  "confederation": "UEFA"
+ },
+ {
+  "fifaCode": "TUN",
+  "name": "Tunisia",
+  "iso2": "tn",
+  "confederation": "CAF"
+ },
+ {
+  "fifaCode": "TUR",
+  "name": "Turkey",
+  "iso2": "tr",
+  "confederation": "UEFA"
+ },
+ {
+  "fifaCode": "USA",
+  "name": "USA",
+  "iso2": "us",
+  "confederation": "CONCACAF"
+ },
+ {
+  "fifaCode": "URU",
+  "name": "Uruguay",
+  "iso2": "uy",
+  "confederation": "CONMEBOL"
+ },
+ {
+  "fifaCode": "UZB",
+  "name": "Uzbekistan",
+  "iso2": "uz",
+  "confederation": "AFC"
+ }
+]

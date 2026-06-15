@@ -1,0 +1,23 @@
+{{define "wallet"}}{{template "header" .}}
+{{$lang := .Lang}}
+<section class="card walletcard">
+  <span class="muted">{{t .Lang "wallet.balance"}}</span>
+  <div class="bignum">{{vnd .Data.Balance}} <small>{{t .Lang "pts"}}</small></div>
+</section>
+<h2>{{t .Lang "wallet.history"}}</h2>
+{{if not .Data.Txns}}<p class="muted">{{t .Lang "wallet.none"}}</p>{{end}}
+<div class="list">
+{{range .Data.Txns}}
+  <div class="txn">
+    <div class="txn-l">
+      <b>{{txnKind $lang .Kind}}</b>
+      <span class="muted small">{{.Memo}} · {{ftime .CreatedUnix}}</span>
+    </div>
+    <div class="txn-r">
+      <span class="net {{if gt .Amount 0}}win{{else if lt .Amount 0}}loss{{end}}">{{if gt .Amount 0}}+{{end}}{{vnd .Amount}}</span>
+      <span class="muted small">{{t $lang "wallet.left"}} {{vnd .BalanceAfter}}</span>
+    </div>
+  </div>
+{{end}}
+</div>
+{{template "footer" .}}{{end}}
