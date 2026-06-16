@@ -13,12 +13,13 @@ import (
 
 // App holds shared dependencies.
 type App struct {
-	db           *sql.DB
-	tmpl         *template.Template
-	oddsKey      string
-	brand        string
-	startBalance int64
-	loc          *time.Location
+	db            *sql.DB
+	tmpl          *template.Template
+	oddsKey       string
+	resultsSource string
+	brand         string
+	startBalance  int64
+	loc           *time.Location
 }
 
 func env(key, def string) string {
@@ -46,11 +47,12 @@ func Run() error {
 	}
 
 	a := &App{
-		db:           db,
-		oddsKey:      os.Getenv("ODDS_API_KEY"),
-		brand:        env("AEWC_BRAND", "AEWC26"),
-		startBalance: startBalance,
-		loc:          loc,
+		db:            db,
+		oddsKey:       os.Getenv("ODDS_API_KEY"),
+		resultsSource: env("AEWC_RESULTS_SOURCE", "espn"),
+		brand:         env("AEWC_BRAND", "AEWC26"),
+		startBalance:  startBalance,
+		loc:           loc,
 	}
 	if err := a.seed(); err != nil {
 		return err
@@ -77,27 +79,37 @@ func (a *App) startJobs() {
 	if oddsEvery < 1 {
 		oddsEvery = 1
 	}
+	ctx := context.Background()
+	// Results/live source: ESPN (free, no key) by default, or the Odds API.
+	syncResults := func() {
+		if a.resultsSource == "oddsapi" {
+			if a.oddsKey != "" {
+				if err := a.syncScores(ctx); err != nil {
+					log.Printf("[scores] %v", err)
+				}
+			}
+			return
+		}
+		if err := a.syncESPN(ctx); err != nil {
+			log.Printf("[espn] %v", err)
+		}
+	}
 	go func() {
 		time.Sleep(3 * time.Second)
+		syncResults()
 		if a.oddsKey != "" {
-			a.syncOdds(context.Background())
-			a.syncScores(context.Background())
+			a.syncOdds(ctx) // bookmaker reference odds (independent of results)
 		}
 		a.settleDueMatches()
 		n := 0
 		for range time.NewTicker(tick).C {
 			n++
 			a.settleDueMatches()
-			if a.oddsKey == "" {
-				continue
-			}
 			if a.hasLiveWindow() {
-				if err := a.syncScores(context.Background()); err != nil {
-					log.Printf("[scores] %v", err)
-				}
+				syncResults()
 			}
-			if n%oddsEvery == 0 {
-				if err := a.syncOdds(context.Background()); err != nil {
+			if a.oddsKey != "" && n%oddsEvery == 0 {
+				if err := a.syncOdds(ctx); err != nil {
 					log.Printf("[odds] %v", err)
 				}
 			}

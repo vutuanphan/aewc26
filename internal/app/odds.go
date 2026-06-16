@@ -292,27 +292,11 @@ func (a *App) syncScores(ctx context.Context) error {
 				as = v
 			}
 		}
-		var status string
-		var oldH, oldA int
-		if a.db.QueryRow(`SELECT status,ft_home,ft_away FROM matches WHERE id=?`, mid).Scan(&status, &oldH, &oldA) != nil {
-			continue
-		}
-		if status == "finished" {
-			continue
-		}
-		if ev.Completed {
-			a.db.Exec(`UPDATE matches SET ft_home=?,ft_away=?,status='finished',settled=0 WHERE id=?`, hs, as, mid)
+		fin, v := a.applyMatchScore(mid, ev.Completed, hs, as)
+		if fin {
 			finished++
-			continue
 		}
-		// in-play
-		changed := hs != oldH || as != oldA
-		if status != "live" || changed {
-			a.db.Exec(`UPDATE matches SET status='live',ft_home=?,ft_away=? WHERE id=?`, hs, as, mid)
-		}
-		if changed {
-			voided += a.refundOpenBets(mid, "live_voided", "có bàn thắng — huỷ kèo chưa khớp")
-		}
+		voided += v
 	}
 	if finished > 0 || voided > 0 {
 		log.Printf("[scores] %d finished, %d open bets voided on goals", finished, voided)

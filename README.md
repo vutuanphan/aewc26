@@ -113,8 +113,12 @@ covered by [`betsmath_test.go`](internal/app/betsmath_test.go).
 
 - Teams and fixtures are seeded from public-domain [openfootball](https://github.com/openfootball)
   data (`internal/app/seeddata/`).
-- With an `ODDS_API_KEY`, results are pulled from The Odds API `/scores` and
-  reference odds from `/odds`. Without a key, the admin enters results manually.
+- **Live + final scores** come from ESPN's free public scoreboard by default
+  (`AEWC_RESULTS_SOURCE=espn`) — no key, no quota. Switch to `oddsapi` to use
+  The Odds API `/scores` instead. The admin can also enter/correct results in
+  `/admin`.
+- **Bookmaker reference odds** (optional) come from The Odds API `/odds` when
+  `ODDS_API_KEY` is set — shown in the create-bet form, refreshed ~every 6h.
 
 ## Tech
 
