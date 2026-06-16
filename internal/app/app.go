@@ -75,7 +75,11 @@ func (a *App) startJobs() {
 	if v, err := strconv.Atoi(os.Getenv("AEWC_LIVE_POLL_SECONDS")); err == nil && v >= 20 {
 		tick = time.Duration(v) * time.Second
 	}
-	oddsEvery := int((6 * time.Hour) / tick) // refresh odds ~every 6h
+	oddsHours := 12 // refresh bookmaker odds ~every 12h (frugal with API quota)
+	if v, err := strconv.Atoi(os.Getenv("AEWC_ODDS_REFRESH_HOURS")); err == nil && v > 0 {
+		oddsHours = v
+	}
+	oddsEvery := int((time.Duration(oddsHours) * time.Hour) / tick)
 	if oddsEvery < 1 {
 		oddsEvery = 1
 	}
